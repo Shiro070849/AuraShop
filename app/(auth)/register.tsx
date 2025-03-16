@@ -1,13 +1,15 @@
-import { View, Text, ScrollView, Image, Dimensions } from 'react-native'
+import { View, Text, ScrollView, Image, Dimensions, Button,KeyboardAvoidingView,Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
-import { Link } from 'expo-router'
+import { Link,router } from 'expo-router'
 import { images } from '@/constants'
 
 export default function register() {
   return (
-    <SafeAreaView className="bg-gray-900 h-full px-4 ">
+    <SafeAreaView className="bg-gray-900 h-full px-4 ">\
+    <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+            className='h-full' >
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 "
@@ -15,11 +17,13 @@ export default function register() {
             minHeight: Dimensions.get("window").height - 100,
           }}
         >
-          <Image
-            source={images.logo}
-            resizeMode="contain"
-            className="h-[34px]"
-          />
+          <View className="flex items-center">
+              <Image
+                source={images.logo}
+                resizeMode="contain"
+                className="h-[34px]"
+              />
+            </View>
 
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
             Sign Up to AuraShop
@@ -54,15 +58,11 @@ export default function register() {
             <Text className="text-lg text-gray-100 font-pregular">
               Have an account already?
             </Text>
-            <Link
-              href="/login"
-              className="text-lg text-orange-500 font-psemibold text-secondary"
-            >
-              Login
-            </Link>
+            <Button title="Register" onPress={() => router.replace('/login')} /> {/*เปลี่ยน link เป็น button*/}
           </View>
         </View>
       </ScrollView>
+    </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

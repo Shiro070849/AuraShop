@@ -1,5 +1,7 @@
+// Button.tsx
 import React from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native'
+import { Text } from '@/components/Themed'
 
 interface ButtonProps {
   title: string
@@ -9,7 +11,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ title, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text>{title}</Text>
+      <Text className="text-lg !text-secondary" fontWeight='bold'>{title}</Text>
     </TouchableOpacity>
   )
 }

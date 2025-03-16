@@ -1,45 +1,54 @@
-//ProductCard.tsx
-import { View, Text, Image } from 'react-native'
+import { Image, Pressable } from 'react-native'
+import { View, Text } from '@/components/Themed'
 import React from 'react'
-import { icons } from '@/constants'
 
 export default function ProductCard({
-    productname, 
-    productprice,
-    productimage
+  productname, 
+  productprice,
+  productimage,
+  postDate,
+  description,
+  onPress
 }: any) {
   return (
-    <View className="flex flex-col items-center px-4 my-2">
-      <View className="flex flex-row gap-3 items-start">
-        <View className="flex justify-center items-center flex-row flex-1">
-          <View className="w-[90px] h-[90px] rounded-lg border border-gray-500 flex justify-center items-center p-0.5">
-            <Image
-              source={{uri: productimage}}
-              className="w-full h-full rounded-lg"
-              resizeMode="cover"
-            />
-          </View>
-
-          <View className="flex justify-center flex-1 ml-3 gap-y-1">
-            <Text
-              className="font-psemibold text-lg text-white"
-              numberOfLines={3}
-            >
-              {productname}
-            </Text>
-            <Text
-              className="text-xl text-gray-100 font-pregular"
-              numberOfLines={1}
-            >
-             {productprice}
-            </Text>
-          </View>
+    <Pressable onPress={onPress} className="flex flex-col shadow-md my-[1px] bg-gray-900 rounded-lg">
+      <Image
+        source={{uri: productimage}}
+        className="w-full h-64"
+        resizeMode="cover"
+      />
+      <View className="p-4">
+        <Text
+          className="text-xl text-white"
+          fontWeight='bold'
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
+          {productname}
+        </Text>
+        <View className="flex flex-row justify-between mt-2">
+          <Text
+            className="text-lg text-gray-400"
+            fontWeight='medium'
+          >
+            ราคา {productprice} บาท
+          </Text>
+          <Text
+            className="text-md text-gray-400 mt-1"
+            fontWeight='medium'
+          >
+            เมื่อ {postDate}
+          </Text>
         </View>
-
-        <View className="pt-2">
-          <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
-        </View>
+        <Text
+          className="text-md text-gray-300 mt-2"
+          fontWeight='light'
+          numberOfLines={3}
+          ellipsizeMode="tail"
+        >
+          {description}
+        </Text>
       </View>
-    </View>
+    </Pressable>
   )
 }
