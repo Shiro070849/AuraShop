@@ -13,9 +13,9 @@ export default function Index() {
 
   return (
     <>
-      { isLoggedIn &&  <Redirect href="/(tabs)/home" /> }     {/*เงื่อนไข ถ้า login แล้วจะพามายังส่วนนี้  ture*/}
+      { isLoggedIn &&  <Redirect href="/(tabs)/home" /> }
       { 
-        !isLoggedIn && <SafeAreaView className="bg-primary h-full">   {/*เงื่อนไข ถ้ายังไม่ login แล้วจะพามายังส่วนนี้ false*/}
+        !isLoggedIn && <SafeAreaView className="bg-primary h-full">
         <ScrollView contentContainerStyle={{height: '100%'}}>
           <View className="w-full flex justify-center items-center h-full px-8">
             
@@ -46,7 +46,7 @@ export default function Index() {
                 resizeMode="contain"
               />
             </View>
-
+              
             {/* Description */}
             <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
               Where Creativity Meets Innovation: Embark on a Journey of Limitless

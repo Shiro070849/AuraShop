@@ -1,11 +1,12 @@
-import { Dimensions, ScrollView, Text, View, Image, Alert ,KeyboardAvoidingView,Platform } from 'react-native'
+import { Dimensions, ScrollView, Text, View, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native'
 import { SafeAreaView, } from 'react-native-safe-area-context'
 import images from '@/constants/images'
-import { Link, router } from 'expo-router'
 import CustomButton from '@/components/CustomButton'
 import FormField from '@/components/FormField'
 import { useState } from 'react'
 import Button from '@/components/Button'
+import { router } from 'expo-router'
+import { supabase } from '@/utils/supabase'
 
 export default function login() {
 
@@ -23,69 +24,92 @@ export default function login() {
 
     setIsSubmitting(true)
 
-    if (form.email === "" || form.password === "") {
+    if (!form.email.trim() || !form.password.trim()) {
       Alert.alert("Error", "Please fill in all fields")
       setIsSubmitting(false)
-    } else {
-      login()
-      setIsSubmitting(false)
+      return
     }
 
-    console.log(form.email, form.password)
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    })
+
+    if (error) {
+      Alert.alert("Login Failed", error.message)
+    } else {
+      console.log('Token:', data.session?.access_token) // Log the token
+      Alert.alert(
+        'Login Successful',
+        'You have successfully logged in.',
+        [
+          {
+            text: 'OK',
+            onPress: () => router.replace('/(tabs)/home'), // ส่งไปยังหน้า Home
+          },
+        ]
+      )
+    }
+
+    setIsSubmitting(false)
   }
 
   return (
-    <SafeAreaView className='px-4  bg-gray-900 h-full'>
-      <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-        className='h-full' >
-      <ScrollView>
-        <View
-          className="w-full flex justify-center h-full px-4 "
-          style={{
-            minHeight: Dimensions.get("window").height - 100,
-          }}
-        >
-          <Image
-            source={images.logo}
-            resizeMode="contain"
-            className="h-[34px]"
-          />
+    <SafeAreaView className='px-4 my-6 bg-primary h-full'>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className='h-full'
+      >
+        <ScrollView>
+          <View
+            className="w-full flex justify-center h-full px-4 my-6"
+            style={{
+              minHeight: Dimensions.get("window").height - 100,
+            }}
+          >
+            <View className="flex items-center">
+              <Image
+                source={images.logo}
+                resizeMode="contain"
+                className="h-[34px]"
+              />
+            </View>
 
-          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Log in to AuraShop
-          </Text>
-
-          <FormField
-            title="Email"
-            value={form.email}
-            handleChangeText={(e:any) => setForm({ ...form, email: e })}
-            otherStyles="mt-7"
-            keyboardType="email-address"
-          />
-
-          <FormField
-            title="Password"
-            value={form.password}
-            handleChangeText={(e:any) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
-          />
-
-          <CustomButton
-            title="Login"
-            handlePress={submit}
-            containerStyles="mt-7 bg-orange-500 text-white py-5"
-            isLoading={isSubmitting}
-            
-          />
-
-          <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
-              Don't have an account?
+            <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
+              Log in to AuraShop
             </Text>
-            <Button title="Register" onPress={() => router.replace('/register')} /> {/*เปลี่ยน link เป็น button*/}
+
+            <FormField
+              title="Email"
+              value={form.email}
+              handleChangeText={(e:any) => setForm({ ...form, email: e })}
+              otherStyles="mt-7"
+              keyboardType="email-address"
+            />
+
+            <FormField
+              title="Password"
+              value={form.password}
+              handleChangeText={(e:any) => setForm({ ...form, password: e })}
+              otherStyles="mt-7"
+              secureTextEntry={true}
+            />
+
+            <CustomButton
+              title="Login"
+              handlePress={submit}
+              containerStyles="mt-7"
+              isLoading={isSubmitting}
+            />
+
+            <View className="flex justify-center pt-5 flex-row gap-2">
+              <Text className="text-lg text-gray-100 font-pregular">
+                Don't have an account?
+              </Text>
+              <Button title="Register" onPress={() => router.replace('/register')} />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   )
