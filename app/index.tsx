@@ -1,15 +1,37 @@
 import { Redirect } from 'expo-router'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomButton from '@/components/CustomButton'
 import { ScrollView, View, Image, Text } from 'react-native'
 import { images } from "@/constants"
 import { router } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Index() {
 
   // สร้างตัวแปร state เช็คสถานะการ login
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInitialized,setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+        console.log('isLoggedIn:', isLoggedIn);
+        if (isLoggedIn === 'true') {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error('Failed to check login status:', error);
+      } finally {
+        setIsInitialized(true);
+      }
+    };
+
+    initialize()
+  }, [])
+
+  if (!isInitialized) return null
 
   return (
     <>
@@ -46,7 +68,7 @@ export default function Index() {
                 resizeMode="contain"
               />
             </View>
-              
+
             {/* Description */}
             <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
               Where Creativity Meets Innovation: Embark on a Journey of Limitless

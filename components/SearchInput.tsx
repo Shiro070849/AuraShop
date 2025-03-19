@@ -2,16 +2,16 @@ import { useState } from "react";
 import { router, usePathname } from "expo-router";
 import { View, TouchableOpacity, Image, TextInput, Alert } from "react-native";
 
-import { icons } from "@/constants";
+import { icons } from "../constants";
 
 const SearchInput = ({ initialQuery }: { initialQuery?: string }) => {
   const pathname = usePathname();
   const [query, setQuery] = useState(initialQuery || "");
 
   return (
-    <View className="flex flex-row items-center h-16 px-4 mx-4 rounded-xl bg-black-100 focus:border-secondary">
+    <View className="flex flex-row items-center h-16 px-4 mx-4 rounded-xl !bg-gray-400 dark:!bg-black focus:border-secondary">
       <TextInput
-        className="text-white mt-0.5 flex-1"
+        className=" text-white mt-0.5 flex-1 text-lg"
         value={query}
         placeholder="ป้อนคำค้นหาสินค้า"
         placeholderTextColor="#fff"
@@ -24,7 +24,8 @@ const SearchInput = ({ initialQuery }: { initialQuery?: string }) => {
           if (query === "")
             return Alert.alert(
               "ไม่พบคำค้นหา",
-              "กรุณาระบุคำค้นหา"
+              "กรุณาระบุคำค้นหา",
+              [{ text: "ตกลง" }]
             );
 
           if (pathname.startsWith("/search")) router.setParams({ query });

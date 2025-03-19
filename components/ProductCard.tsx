@@ -1,6 +1,6 @@
-import { Image, Pressable } from 'react-native'
-import { View, Text } from '@/components/Themed'
-import React from 'react'
+import { Image, Pressable } from 'react-native';
+import { View, Text } from '@/components/Themed';
+import React from 'react';
 
 export default function ProductCard({
   productname, 
@@ -11,16 +11,17 @@ export default function ProductCard({
   onPress
 }: any) {
   return (
-    <Pressable onPress={onPress} className="flex flex-col shadow-md my-[1px] bg-gray-900 rounded-lg">
-      <Image
-        source={{uri: productimage}}
-        className="w-full h-64"
-        resizeMode="cover"
-      />
+    <Pressable onPress={onPress} className="flex flex-col shadow-md my-[1px] dark:bg-gray-800 bg-white" android_ripple={{ color: 'rgba(104, 104, 104, 0.3)' }}>
+      
       <View className="p-4">
+        <Image
+          source={{uri: productimage}}
+          className="w-full h-48 rounded-xl"
+          resizeMode="cover"
+        />
         <Text
-          className="text-xl text-white"
-          fontWeight='bold'
+          className="text-xl pt-4"
+          fontWeight='medium'
           numberOfLines={2}
           ellipsizeMode="tail"
         >
@@ -28,21 +29,21 @@ export default function ProductCard({
         </Text>
         <View className="flex flex-row justify-between mt-2">
           <Text
-            className="text-lg text-gray-400"
+            className="text-lg !text-gray-400"
             fontWeight='medium'
           >
-            ราคา {productprice} บาท
+            {productprice} บาท
           </Text>
           <Text
-            className="text-md text-gray-400 mt-1"
+            className="text-md !text-gray-400 mt-1"
             fontWeight='medium'
           >
             เมื่อ {postDate}
           </Text>
         </View>
         <Text
-          className="text-md text-gray-300 mt-2"
-          fontWeight='light'
+          className="text-md mt-2"
+          fontWeight='regular'
           numberOfLines={3}
           ellipsizeMode="tail"
         >
@@ -50,5 +51,5 @@ export default function ProductCard({
         </Text>
       </View>
     </Pressable>
-  )
+  );
 }

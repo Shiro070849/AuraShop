@@ -1,4 +1,5 @@
-import { ActivityIndicator, Text, TouchableOpacity } from "react-native"
+import { ActivityIndicator,TouchableOpacity } from "react-native"
+import { Text } from "./Themed"
 
 const CustomButton = ({
   title,
@@ -16,7 +17,7 @@ const CustomButton = ({
       }`}
       disabled={isLoading}
     >
-      <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>
+      <Text className={`!text-white text-lg ${textStyles}`} fontWeight="bold">
         {title}
       </Text>
 

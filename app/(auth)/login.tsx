@@ -7,13 +7,14 @@ import { useState } from 'react'
 import Button from '@/components/Button'
 import { router } from 'expo-router'
 import { supabase } from '@/utils/supabase'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function login() {
 
   // กำหนดตัวแปร State สำหรับเก็บค่าของ Email และ Password
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: "pilan.mill@gmail.com",
+    password: "111111",
   })
 
   // กำหนดตัวแปรเก็บสถานะการ submit ข้อมูล
@@ -24,7 +25,7 @@ export default function login() {
 
     setIsSubmitting(true)
 
-    if (!form.email.trim() || !form.password.trim()) {
+    if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields")
       setIsSubmitting(false)
       return
@@ -39,13 +40,18 @@ export default function login() {
       Alert.alert("Login Failed", error.message)
     } else {
       console.log('Token:', data.session?.access_token) // Log the token
+
+      //save token
+      await AsyncStorage.setItem("token", data.session?.access_token);
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+
       Alert.alert(
         'Login Successful',
-        'You have successfully logged in.',
+        'You have successfully registered. Press OK to login.',
         [
           {
             text: 'OK',
-            onPress: () => router.replace('/(tabs)/home'), // ส่งไปยังหน้า Home
+            onPress: () => router.replace('/(tabs)/home'), // ส่งไปยังหน้า Home โดยการแทนที่(replace)
           },
         ]
       )
@@ -55,7 +61,7 @@ export default function login() {
   }
 
   return (
-    <SafeAreaView className='px-4 my-6 bg-primary h-full'>
+    <SafeAreaView className='px-4 bg-primary h-full'>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className='h-full'
@@ -92,7 +98,6 @@ export default function login() {
               value={form.password}
               handleChangeText={(e:any) => setForm({ ...form, password: e })}
               otherStyles="mt-7"
-              secureTextEntry={true}
             />
 
             <CustomButton

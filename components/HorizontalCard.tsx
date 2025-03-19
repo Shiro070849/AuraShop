@@ -4,7 +4,8 @@ import React from 'react';
 
 export default function HorizontalCard({ image, title, onPress }: any) {
   return (
-    <Pressable onPress={onPress} className="flex flex-col items-center rounded-lg mx-2">
+    <Pressable onPress={onPress} className="flex flex-col items-center rounded-lg mx-2" 
+      android_ripple={{ color: 'rgba(104, 104, 104, 0.3)' }}>
       <Image
         source={{ uri: image }}
         className="w-48 h-64 rounded-lg"
